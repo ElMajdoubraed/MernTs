@@ -1,0 +1,113 @@
+version: "3.9"
+
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+      target: development-build-stage
+    depends_on:
+      - mongodb
+      - redis
+    command: npm run dev
+    image: server_docker
+    container_name: server_container
+    ports:
+      - 4000:4000
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./server:/usr/src/app
+    networks:
+      - docker_app
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    command: npm run start
+    image: client_docker
+    container_name: client_container
+    depends_on:
+      - server
+    ports:
+      - 3000:3000
+    volumes:
+      - ./client:/usr/src/app
+    networks:
+      - docker_app
+
+  docs:
+    build:
+      context: ./docs
+      dockerfile: Dockerfile
+    image: docs_docker
+    container_name: docs_container
+    ports:
+      - 2000:2000
+    volumes:
+      - ./docs:/usr/src/app
+    networks:
+      - docker_app
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    command: [nginx-debug, "-g", "daemon off;"]
+    image: nginx_docker
+    container_name: nginx_container
+    depends_on:
+      - client
+      - server
+      - mongo-express
+      - docs
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - docker_app
+
+  mongodb:
+    image: mongo:latest
+    #restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    ports:
+      - 27017:27017
+    volumes:
+      - docker_app-volume:/data/db
+    networks:
+      - docker_app
+
+  mongo-express:
+    image: mongo-express:latest
+    depends_on:
+      - mongodb
+    #restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+      ME_CONFIG_MONGODB_URL: mongodb://admin:admin@mongodb:27017/
+    networks:
+      - docker_app
+
+  redis:
+    image: redis:latest
+    container_name: redis_container
+    ports:
+      - 6379:6379
+    networks:
+      - docker_app
+
+networks:
+  docker_app:
+    driver: bridge
+
+volumes:
+  docker_app-volume:
