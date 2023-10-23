@@ -29,11 +29,11 @@ jobs:
         with:
           node-version: "14"
       - name: Install dependencies
-        run: npm install
+        run: cd docs && npm install
       - name: Build
-        run: npm run build
+        run: cd docs && npm run build
       - name: Save output
-        run: mv build out
+        run: cd docs && mv build ../out
 
   #Check job
   check:
@@ -41,7 +41,7 @@ jobs:
     needs: build
     steps:
       - name: Checkout
-        run: if [! -d "$out" ]; then mkdir out; fi
+        run: if [! -d "$out" ]; then mkdir docs/out; fi
 
   # Deployment job
   deploy:
