@@ -34,6 +34,10 @@ jobs:
       #run: cd docs && npm run build
       - name: Save output
         run: cd docs && mv export ../out
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: ./out
 
   #Check job
   check:
