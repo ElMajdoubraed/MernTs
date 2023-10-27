@@ -6,6 +6,7 @@ export interface IUser extends mongoose.Document {
   password: string;
   about: string;
   avatar: string;
+  provider: string;
   getData: () => object;
   signJwt: () => object;
   checkPassword: (password: string) => boolean;

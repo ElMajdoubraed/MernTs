@@ -4,6 +4,32 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mern (TypeScript, Redis, Docker, Socket.io, Tailwind)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body></body>
+  <body>
+    <div class="container mx-auto mt-24">
+      <h1 class="text-3xl font-bold underline decoration-pink-500">
+        Welcome to our api
+      </h1>
+      <p
+        class="mt-5 subpixel-antialiased hover:subpixel-antialiased -tracking-2"
+      >
+        For now we dont have any
+        <span class="text-blue-600">documentation,</span> and you don't have
+        <span class="underline decoration-indigo-500">access to our code,</span>
+        please contact us for more informations.
+        <span>👋 </span>
+      </p>
+    </div>
+    <code id="code" style="display: hidden">
+      app.get("/html", (req: Request, res: Response) => { res .status(200)
+      .sendFile(path.join(__dirname, "../../public", "index.html")); });
+    </code>
+    <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#code").hide();
+      });
+    </script>
+  </body>
 </html>

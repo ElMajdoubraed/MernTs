@@ -4,4 +4,36 @@
 
 * {
   font-family: Cairo, sans-serif;
+  transition: all 0.3s ease-in-out;
+  padding: 0;
+  margin: 0;
+}
+
+.rtl {
+  direction: rtl !important;
+}
+
+input {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+/* Recaptcha */
+.re-captcha {
+  margin: 0 0;
+  transform: scale(0.85) translateX(1.9rem) !important;
+}
+
+/* React Swiper */
+.swiper-button-next,
+.swiper-button-prev {
+  color: #6366f1 !important;
+}
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 30px !important;
+  font-weight: 700 !important;
+}
+.swiper-pagination-bullet-active {
+  background-color: #6366f1 !important;
 }

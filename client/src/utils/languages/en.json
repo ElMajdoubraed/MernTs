@@ -1,0 +1,15 @@
+{
+  "title": "Multi-language app",
+  "label": "Select another language!",
+  "about": "About",
+  "home": "Home",
+  "login.title": "Sign in to your account",
+  "login.or": "Or continue with",
+  "login.notmember": "Not a member?",
+  "login.signup": "Sign up now",
+  "login.forgotpassword": "Forgot password?",
+  "login.viewpassword": "View password",
+  "login.submit": "Sign in",
+  "input.email": "Email address",
+  "input.password": "Password"
+}

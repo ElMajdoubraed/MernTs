@@ -6,6 +6,10 @@ import express from "express";
 import path from "path";
 import logger from "morgan";
 import dbConnect from "./database";
+import ejs from "ejs";
+import passport from "passport";
+import session from "express-session";
+import * as Sentry from "@sentry/node";
 
 interface Error extends Errback {
   status?: number;
@@ -23,9 +27,15 @@ module.exports = async function (app: Application) {
   app.use(cookieParser());
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
-  app.use(logger("dev"));
-  app.use(express.static(path.join(__dirname, "../../public")));
+  app.use(logger(env));
 
+  // ejs config
+  app.set("view engine", "ejs");
+  app.use(express.static("public"));
+  app.use(express.static("uploads"));
+  ejs.delimiter = "?";
+
+  // error handler
   app.use(
     (err: Error, req: RequestWithUser, res: Response, next: NextFunction) => {
       if (
@@ -33,6 +43,7 @@ module.exports = async function (app: Application) {
         err.name === "ValidationError" ||
         err.name === "CastError"
       ) {
+        console.error("Express config error : ", err);
         err.status = 422;
       }
       if (req.get("accept")?.includes("json")) {
@@ -46,4 +57,38 @@ module.exports = async function (app: Application) {
       }
     }
   );
+
+  // sentry config
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    tracesSampleRate: 1.0,
+    integrations: [
+      new Sentry.Integrations.Http({ tracing: true }),
+      new Sentry.Integrations.Express({
+        app,
+      }),
+    ],
+  });
+  app.use(
+    Sentry.Handlers.requestHandler({
+      serverName: false,
+      user: ["email"],
+    })
+  );
+  app.use(Sentry.Handlers.tracingHandler());
+  app.use(Sentry.Handlers.errorHandler());
+
+  // session config
+  app.use(
+    session({
+      secret: "P@ssw0rd:!@#",
+      resave: false,
+      saveUninitialized: true,
+      cookie: { secure: true },
+    })
+  );
+
+  // passport config
+  app.use(passport.initialize());
+  app.use(passport.session());
 };

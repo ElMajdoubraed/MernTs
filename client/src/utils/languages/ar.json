@@ -1,0 +1,15 @@
+{
+  "title": "تطبيق متعدد اللغات",
+  "label": "اختر لغة أخرى!",
+  "about": "حول",
+  "home": "الصفحة الرئيسية",
+  "login.title": "تسجيل الدخول",
+  "login.or": "أو تابع بـ",
+  "login.notmember": "لست عضوا؟",
+  "login.signup": "سجل الآن",
+  "login.forgotpassword": "هل نسيت كلمة المرور؟",
+  "login.viewpassword": "عرض كلمة المرور",
+  "login.submit": "تسجيل الدخول",
+  "input.email": "البريد الإلكتروني",
+  "input.password": "كلمة المرور"
+}

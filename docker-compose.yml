@@ -43,6 +43,7 @@ services:
       dockerfile: Dockerfile
     image: docs_docker
     container_name: docs_container
+    command: npm run start
     ports:
       - 2000:2000
     volumes:
@@ -61,7 +62,6 @@ services:
       - client
       - server
       - mongo-express
-      - docs
     ports:
       - 80:80
       - 443:443

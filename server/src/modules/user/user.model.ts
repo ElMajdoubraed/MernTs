@@ -21,6 +21,11 @@ const ModelSchema = new mongoose.Schema(
       required: true,
     },
     avatar: String,
+    provider: {
+      type: String,
+      enum: ["jwt", "google", "github"],
+      default: "jwt",
+    },
   },
   {
     timestamps: true,
